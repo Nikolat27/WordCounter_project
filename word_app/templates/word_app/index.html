@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Counter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .result {
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div align="center">
+        <h1>Word Counter</h1>
+    </div>
+    <textarea id="textInput" placeholder="Enter your text here" rows="10" cols="80"
+              style="resize: vertical;"></textarea>
+    <br><br>
+    <div align="center">
+        <button onclick="countWords()"><span style="font-size: larger">Count Words</span></button>
+        <br><br>
+        <hr>
+        <label>Total Words:</label>
+        <div id="totalWords" class="result">0</div>
+        <label>Total Characters:</label>
+        <div id="totalCharacters" class="result">0</div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function countWords() {
+        let text = document.getElementById("textInput").value;
+        $.ajax({
+            url: 'http://127.0.0.1:8000/',
+            method: 'POST',
+            data: {
+                text: text,
+            },
+            success: function (response) {
+                document.getElementById("totalWords").innerText = response.total_words;
+                document.getElementById("totalCharacters").innerText = response.total_characters;
+                console.log(response.bool)
+            },
+            error: function (xhr, status, error) {
+                console.log('Error:', error);
+            }
+        });
+    }
+</script>
+</body>
+</html>
